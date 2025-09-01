@@ -142,7 +142,8 @@ $$
 \frac{\mathbb{E}[(X-\bar{X})^4]}
 {\big(\mathbb{E}[(X-\bar{X})^2]\big)^2} - 3
 $$
-<img width="1525" height="615" alt="MSFT_Simulation 1" src="https://github.com/user-attachments/assets/071a050d-faef-41b2-98fc-087f04634c40" />
+
+
 
 ---
 
@@ -230,6 +231,7 @@ monte-carlo-gbm/
 └── notebooks/               # Optional Jupyter notebooks
 License
 MIT License
+
 
 References
 Hull, John C. Options, Futures, and Other Derivatives, 10th Edition
