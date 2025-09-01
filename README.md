@@ -97,117 +97,136 @@ Per-step log return distribution plot
 
 Console summary of statistics
 
-Technical Details
-Geometric Brownian Motion (GBM)
-The stock price 
-𝑆
-𝑡
-S 
-t
-​
-  is modeled as a stochastic differential equation:
+**Technical Details**
 
-𝑑
-𝑆
-𝑡
-=
-𝜇
-𝑆
-𝑡
- 
-𝑑
-𝑡
-+
-𝜎
-𝑆
-𝑡
- 
-𝑑
-𝑊
-𝑡
-dS 
-t
-​
- =μS 
-t
-​
- dt+σS 
-t
-​
- dW 
-t
-​
- 
+## Mathematical Model and Formulas
+
+### 1. Stock Price Evolution (Geometric Brownian Motion)
+
+The stock price \( S_t \) is modeled as a **stochastic process**:
+
+\[
+dS_t = \mu S_t \, dt + \sigma S_t \, dW_t
+\]
+
 Where:
 
-𝜇
-μ = expected annualized return (drift)
+- \( S_t \) = stock price at time \( t \)  
+- \( \mu \) = drift (expected annualized return)  
+- \( \sigma \) = volatility (annualized standard deviation of returns)  
+- \( dW_t \) = Brownian motion increment (\( \sim \mathcal{N}(0, \sqrt{dt}) \))  
 
-𝜎
-σ = annualized volatility
+---
 
-𝑊
-𝑡
-W 
-t
-​
-  = standard Brownian motion
+### 2. Logarithmic Returns (Daily Returns)
 
-The discretized exact solution used in the simulation:
+\[
+R_t = \ln \frac{S_t}{S_{t-1}}
+\]
 
-𝑆
-𝑡
-+
-Δ
-𝑡
-=
-𝑆
-𝑡
-⋅
-exp
-⁡
-(
-(
-𝜇
-−
-1
-2
-𝜎
-2
-)
-Δ
-𝑡
-+
-𝜎
-Δ
-𝑡
-𝑍
-)
-,
-𝑍
-∼
-𝑁
-(
-0
-,
-1
-)
-S 
-t+Δt
-​
- =S 
-t
-​
- ⋅exp((μ− 
-2
-1
-​
- σ 
-2
- )Δt+σ 
-Δt
-​
- Z),Z∼N(0,1)
+- Captures the percentage change in stock price in log scale.
+
+---
+
+### 3. Drift Component
+
+\[
+\text{drift} = \mu - \frac{1}{2}\sigma^2
+\]
+
+- Accounts for expected growth, adjusted for variance.
+
+---
+
+### 4. Random Component (Shock / Diffusion)
+
+\[
+\text{shock} = \sigma \cdot Z
+\]
+
+- \( Z \sim \mathcal{N}(0,1) \) is a standard normal random variable.
+- Introduces randomness to the price evolution.
+
+---
+
+### 5. Discretized GBM (Monte Carlo Step)
+
+For small time increments \( \Delta t \):
+
+\[
+S_{t+\Delta t} = S_t \cdot 
+\exp \Big( (\mu - \frac{1}{2}\sigma^2)\Delta t + \sigma \sqrt{\Delta t} Z \Big)
+\]
+
+- Used iteratively to simulate stock paths over multiple steps.
+
+---
+
+### 6. Iterative Simulation
+
+\[
+S_{t+1} = S_t \cdot e^{\text{drift} \cdot \Delta t + \sigma \sqrt{\Delta t} Z_{t+1}}, \quad t = 0,1,2,\dots,n-1
+\]
+
+- Repeat for \( n \) steps and \( N \) paths to generate Monte Carlo outcomes.
+
+---
+
+### 7. Statistical Metrics from Simulation
+
+- **Mean Terminal Price**:
+
+\[
+\bar{S_T} = \frac{1}{N} \sum_{j=1}^{N} S_T^{(j)}
+\]
+
+- **Standard Deviation**:
+
+\[
+\text{Std}(S_T) = \sqrt{\frac{1}{N-1} \sum_{j=1}^N 
+\big(S_T^{(j)} - \bar{S_T}\big)^2}
+\]
+
+- **Percentiles (25th, 50th, 75th)**:
+
+\[
+Q_p = \text{quantile at } p\%
+\]
+
+- **Probability above initial price**:
+
+\[
+P(S_T > S_0) = \frac{ \# \{ S_T^{(j)} > S_0 \} }{N}
+\]
+
+- **Per-step log-return mean and standard deviation**:
+
+\[
+\mu_{\Delta t} = (\mu - \frac{1}{2}\sigma^2)\Delta t, \quad 
+\sigma_{\Delta t} = \sigma \sqrt{\Delta t}
+\]
+
+- **Probability of negative return per step**:
+
+\[
+P(\Delta r < 0) = 
+\frac{ \# \{ \Delta r_i < 0 \} }{N \cdot \text{steps}}
+\]
+
+- **Skewness and Kurtosis** (for return distribution):
+
+\[
+\text{Skew}(X) = 
+\frac{\mathbb{E}[(X-\bar{X})^3]}
+{\big(\mathbb{E}[(X-\bar{X})^2]\big)^{3/2}}, \quad
+\text{Kurt}(X) = 
+\frac{\mathbb{E}[(X-\bar{X})^4]}
+{\big(\mathbb{E}[(X-\bar{X})^2]\big)^2} - 3
+\]
+
+
+Geometric Brownian Motion (GBM)
+
 Drift term: captures expected growth
 
 Diffusion term: introduces randomness
