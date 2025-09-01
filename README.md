@@ -115,7 +115,7 @@ $$
 - **Probability above initial price**:
 
 $$
-P(S_T > S_0) = \frac{ \# \{ S_T^{(j)} > S_0 \} }{N}
+P(S_T > S_0) = \frac{ \ \{ S_T^{(j)} > S_0 \} }{N}
 $$
 
 - **Per-step log-return mean and standard deviation**:
@@ -129,7 +129,7 @@ $$
 
 $$
 P(\Delta r < 0) = 
-\frac{ \# \{ \Delta r_i < 0 \} }{N \cdot \text{steps}}
+\frac{ \ \{ \Delta r_i < 0 \} }{N \cdot \text{steps}}
 $$
 
 - **Skewness and Kurtosis**:
