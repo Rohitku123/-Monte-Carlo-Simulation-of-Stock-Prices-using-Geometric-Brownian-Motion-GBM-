@@ -143,6 +143,12 @@ $$
 {\big(\mathbb{E}[(X-\bar{X})^2]\big)^2} - 3
 $$
 
+monte-carlo-gbm/
+├── assets/
+│   ├── <img width="1330" height="840" alt="MSFT_Simulation 2" src="https://github.com/user-attachments/assets/03674eb2-1dff-42fc-81d8-d04c7b135f9a" />
+
+│   ├── <img width="1525" height="615" alt="MSFT_Simulation 1" src="https://github.com/user-attachments/assets/7be1aa9d-190d-4df5-b318-390c72c8277c" />
+
 
 
 ---
